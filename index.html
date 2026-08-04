@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      vite-plugin-pwa auto-injects the <link rel="manifest"> and the main
+      theme-color tag for you — you don't need to add those by hand.
+
+      iOS Safari, though, doesn't fully respect the web manifest spec for
+      "Add to Home Screen" — it wants its own apple-* tags. Add these inside
+      <head> in your real index.html (I don't have that file — only src/ was
+      ever uploaded to me — so this is a snippet to paste in, not a full file).
+    -->
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="EasyEarn" />
+    <title>mulaearn-frontend-app</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

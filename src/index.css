@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/*
+  This project is the dashboard ONLY — the "energetic earner" palette
+  from our contextual design system. The public site's trust-first
+  navy/white palette lives in the separate Next.js project, not here.
+
+  Theme switching: every color below is a CSS variable, overridden under
+  [data-theme="light"]. Components should NEVER use raw text-white,
+  bg-white/5, border-white/10 etc. — use the semantic dash-* tokens
+  (dash-text, dash-border, dash-overlay, dash-overlay-strong) so they
+  automatically adapt when the theme toggles. See lib/theme-context.tsx
+  for how [data-theme] gets set on <html>.
+*/
+:root {
+  --dash-bg: #0b1120;
+  --dash-surface: #131c31;
+  --dash-text: #ffffff;
+  --dash-border: rgba(255, 255, 255, 0.1);
+  --dash-overlay: rgba(255, 255, 255, 0.05);
+  --dash-overlay-strong: rgba(255, 255, 255, 0.1);
+  --dash-accent-500: #22c55e;
+  --dash-accent-600: #16a34a;
+  --dash-warn-500: #f59e0b;
+
+  --font-sans-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root[data-theme="light"] {
+  --dash-bg: #f8fafc;
+  --dash-surface: #ffffff;
+  --dash-text: #0f172a;
+  --dash-border: rgba(15, 23, 42, 0.1);
+  --dash-overlay: rgba(15, 23, 42, 0.04);
+  --dash-overlay-strong: rgba(15, 23, 42, 0.08);
+  --dash-accent-500: #16a34a;
+  --dash-accent-600: #15803d;
+  --dash-warn-500: #d97706;
+}
+
+@theme inline {
+  --color-dash-bg: var(--dash-bg);
+  --color-dash-surface: var(--dash-surface);
+  --color-dash-text: var(--dash-text);
+  --color-dash-border: var(--dash-border);
+  --color-dash-overlay: var(--dash-overlay);
+  --color-dash-overlay-strong: var(--dash-overlay-strong);
+  --color-dash-accent-500: var(--dash-accent-500);
+  --color-dash-accent-600: var(--dash-accent-600);
+  --color-dash-warn-500: var(--dash-warn-500);
+  --font-sans: var(--font-sans-stack);
+}
+
+body {
+  margin: 0;
+  background: var(--dash-bg);
+  color: var(--dash-text);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.25s ease-out;
+}
+
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.animate-auth-float {
+  animation: auth-float 4s ease-in-out infinite;
+}
+
+@keyframes auth-drift-1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 20px); }
+}
+.animate-auth-drift-1 {
+  animation: auth-drift-1 12s ease-in-out infinite;
+}
+
+@keyframes auth-drift-2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-25px, 25px); }
+}
+.animate-auth-drift-2 {
+  animation: auth-drift-2 10s ease-in-out infinite;
+}
+
+@keyframes auth-draw {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+.animate-auth-draw {
+  animation: auth-draw 2.5s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
