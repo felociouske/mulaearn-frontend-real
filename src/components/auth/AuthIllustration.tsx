@@ -7,7 +7,7 @@ export default function AuthIllustration({ tagline }: { tagline: string }) {
       <div className="pointer-events-none absolute -bottom-20 left-1/4 h-80 w-80 animate-auth-drift-1 rounded-full bg-dash-accent-600/30 blur-3xl" />
 
       <div className="relative z-10">
-        <p className="text-xl font-bold text-white">EasyEarn</p>
+        <p className="text-xl font-bold text-white">MulaEarn</p>
       </div>
 
       {/* Floating coin markers */}

@@ -2,21 +2,69 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--
-      vite-plugin-pwa auto-injects the <link rel="manifest"> and the main
-      theme-color tag for you — you don't need to add those by hand.
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-      iOS Safari, though, doesn't fully respect the web manifest spec for
-      "Add to Home Screen" — it wants its own apple-* tags. Add these inside
-      <head> in your real index.html (I don't have that file — only src/ was
-      ever uploaded to me — so this is a snippet to paste in, not a full file).
-    -->
+    <!-- ============ Core SEO ============ -->
+    <title>MulaEarn | Engage in chats, app & movie reviews, daily surveys and wheel spinning - Earn instantly </title>
+    <meta
+      name="description"
+      content="Earn real money from chats, app & movie reviews, daily surveys, and the wheel spin — paid out instantly in your own currency. Join MulaEarn free."
+    />
+    <meta name="keywords" content="earn money online, online jobs Kenya, chat and earn, app review jobs, survey jobs, M-Pesa earning app" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="MulaEarn" />
+    <!-- Replace with your real production domain before deploying -->
+    <link rel="canonical" href="https://mulaearn.co/" />
+
+    <!-- ============ Open Graph (Facebook, WhatsApp, LinkedIn, etc.) ============ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MulaEarn" />
+    <meta property="og:title" content="MulaEarn — Chat, Review, Survey & Earn in Your Own Currency" />
+    <meta
+      property="og:description"
+      content="Earn real money from chats, app & movie reviews, daily surveys, and the wheel spin — paid out instantly in your own currency."
+    />
+    <!-- Replace with your real domain + a real 1200x630 social preview image -->
+    <meta property="og:url" content="https://mulaearn.co/" />
+    <meta property="og:image" content="https://mulaearn.co/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_KE" />
+
+    <!-- ============ Twitter/X Card ============ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MulaEarn — Chat, Review, Survey & Earn in Your Own Currency" />
+    <meta
+      name="twitter:description"
+      content="Earn real money from chats, app & movie reviews, daily surveys, and the wheel spin — paid out instantly in your own currency."
+    />
+    <meta name="twitter:image" content="https://mulaearn.co/og-image.png" />
+
+    <!-- ============ Favicons / app icons ============ -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
+    <!-- Safari pinned-tab icon — needs to be a single-color SVG; reuse favicon.svg if it qualifies, otherwise make a monochrome version -->
+    <link rel="mask-icon" href="/favicon.svg" color="#22c55e" />
+
+    <!-- ============ PWA ============ -->
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0b1120" />
+    <meta name="background-color" content="#0b1120" />
+
+    <!-- iOS Safari-specific PWA tags — it doesn't fully respect the manifest spec -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="EasyEarn" />
-    <title>mulaearn-frontend-app</title>
+    <meta name="apple-mobile-web-app-title" content="MulaEarn" />
+
+    <!-- Android/Chrome address-bar tint on mobile -->
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- Prevents iOS from auto-linking phone numbers/emails inside chat
+         messages and turning them into blue tappable links mid-conversation -->
+    <meta name="format-detection" content="telephone=no, email=no" />
   </head>
   <body>
     <div id="root"></div>
