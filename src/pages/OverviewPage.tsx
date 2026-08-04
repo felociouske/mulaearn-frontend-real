@@ -39,7 +39,7 @@ export default function OverviewPage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-dash-surface to-dash-bg p-6 ring-1 ring-dash-border md:p-8">
+      <section className="relative overflow-hidden rounded-2xl bg-linear-to-br from-dash-surface to-dash-bg p-6 ring-1 ring-dash-border md:p-8">
         <WelcomeBannerBackground />
         <div className="relative z-10">
         <div className="flex flex-wrap items-center gap-2">
