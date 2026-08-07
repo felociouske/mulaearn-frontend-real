@@ -49,7 +49,7 @@ export default function WalletCard({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${config.gradient} p-5 text-white shadow-lg`}
+      className={`relative overflow-hidden rounded-2xl bg-linear-to-br ${config.gradient} p-5 text-white shadow-lg`}
     >
       {/* Decorative texture — faint diagonal sheen, purely visual */}
       <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
@@ -59,7 +59,7 @@ export default function WalletCard({
         <div className="flex h-8 w-8 items-center justify-center rounded-md bg-white/15">
           {config.icon}
         </div>
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">EasyEarn</p>
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-white/60">MulaEarn</p>
       </div>
 
       <p className="relative mt-5 text-xs font-medium uppercase tracking-wide text-white/60">

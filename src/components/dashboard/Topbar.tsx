@@ -15,7 +15,7 @@ export default function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
   const initial = user?.username?.charAt(0).toUpperCase() ?? "?";
 
   return (
-    <header className="flex items-center justify-between border-b border-dash-border bg-dash-bg px-4 py-4 md:px-6">
+    <header className="relative z-30 flex items-center justify-between border-b border-dash-border bg-dash-bg px-4 py-4 md:px-6">
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
@@ -24,8 +24,13 @@ export default function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
         >
           <MenuIcon size={22} />
         </button>
-        <p className="text-sm text-dash-text/40">EasyEarn Dashboard</p>
       </div>
+
+      <img
+        src="/mulaearn.jpg"
+        alt="MulaEarn"
+        className="absolute left-1/2 top-1/2 z-10 h-12 w-auto max-w-[160px] -translate-x-1/2 -translate-y-1/2 object-contain md:h-14 md:max-w-[200px]"
+      />
 
       <div className="relative flex items-center gap-2">
         {user?.country && (

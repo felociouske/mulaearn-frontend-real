@@ -9,6 +9,45 @@ import {
 } from "@/lib/activation";
 import { ApiError } from "@/lib/api";
 
+// Full destination details for a gateway — the same idea as
+// DepositForm's compact GatewayDestination, but expanded to a labeled
+// list since this page shows one gateway at a time, fully expanded,
+// rather than a tab strip. `description` (the step-by-step guide) is
+// rendered separately below this, shared verbatim with the deposit page.
+function GatewayDetails({ gateway }: { gateway: PaymentGateway }) {
+  if (gateway.group === "kenya") {
+    return (
+      <div className="space-y-1 text-sm text-dash-text/70">
+        {gateway.till_number && <p>Till Number: <span className="text-dash-text">{gateway.till_number}</span></p>}
+        {gateway.paybill_number && <p>Paybill: <span className="text-dash-text">{gateway.paybill_number}</span></p>}
+        {gateway.account_reference && <p>Account: <span className="text-dash-text">{gateway.account_reference}</span></p>}
+      </div>
+    );
+  }
+  if (gateway.group === "ghana_nigeria") {
+    return (
+      <div className="space-y-1 text-sm text-dash-text/70">
+        <p>Recipient name: <span className="text-dash-text">{gateway.recipient_name}</span></p>
+        <a
+          href={gateway.eversend_link}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block font-medium text-dash-accent-500 hover:underline"
+        >
+          Open Eversend to pay →
+        </a>
+      </div>
+    );
+  }
+  // uganda_tanzania and other share the same recipient_name + recipient_phone shape.
+  return (
+    <div className="space-y-1 text-sm text-dash-text/70">
+      <p>Send to: <span className="text-dash-text">{gateway.recipient_phone}</span></p>
+      <p>Recipient name: <span className="text-dash-text">{gateway.recipient_name}</span></p>
+    </div>
+  );
+}
+
 export default function ActivatePage() {
   const { user, logout, refreshUser } = useAuth();
 
@@ -105,8 +144,8 @@ export default function ActivatePage() {
             <p className="font-semibold text-dash-text">⏳ Your activation payment is under review</p>
             <p className="mt-1 text-sm text-dash-text/60">
               Submitted {new Date(latestSubmission!.created_at).toLocaleString()} via{" "}
-              {latestSubmission!.gateway?.display_name ?? latestSubmission!.method_type}. We'll unlock your
-              dashboard as soon as it's approved — this is usually quick, but you can check back here anytime.
+              {latestSubmission!.gateway_display_name}. We'll unlock your dashboard as soon as it's approved —
+              this is usually quick, but you can check back here anytime.
             </p>
             <button
               onClick={handleRefreshStatus}
@@ -150,7 +189,11 @@ export default function ActivatePage() {
                 <div className="mt-3 space-y-3">
                   {gateways.map((gateway) => {
                     const isSelected = selectedGateway?.id === gateway.id;
-                    const isDisabled = gateway.is_automatic; // Daraja STK push not wired up yet — manual works today
+                    // Instant M-Pesa activation isn't wired up on this page yet
+                    // (Daraja STK push currently only exists for topping up an
+                    // already-active account, on the Deposit page) — so Kenya's
+                    // automatic row stays disabled here specifically.
+                    const isDisabled = gateway.group === "kenya" && gateway.is_automatic;
                     return (
                       <div key={gateway.id}>
                         <button
@@ -175,15 +218,9 @@ export default function ActivatePage() {
 
                         {isSelected && !isDisabled && (
                           <div className="mt-2 rounded-xl bg-dash-surface p-5 ring-1 ring-dash-border">
-                            <div className="space-y-1 text-sm text-dash-text/70">
-                              {gateway.till_number && <p>Till Number: <span className="text-dash-text">{gateway.till_number}</span></p>}
-                              {gateway.paybill_number && <p>Paybill: <span className="text-dash-text">{gateway.paybill_number}</span></p>}
-                              {gateway.account_reference && <p>Account: <span className="text-dash-text">{gateway.account_reference}</span></p>}
-                              {gateway.recipient_phone && <p>Send to: <span className="text-dash-text">{gateway.recipient_phone}</span></p>}
-                              {gateway.recipient_name && <p>Recipient name: <span className="text-dash-text">{gateway.recipient_name}</span></p>}
-                            </div>
+                            <GatewayDetails gateway={gateway} />
                             <pre className="mt-3 whitespace-pre-wrap rounded-lg bg-dash-overlay p-3 text-sm text-dash-text/80 font-sans">
-                              {gateway.instructions}
+                              {gateway.description}
                             </pre>
 
                             <form onSubmit={handleSubmit} className="mt-4 space-y-3">

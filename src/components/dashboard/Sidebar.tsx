@@ -11,9 +11,6 @@ type NavLeaf = { label: string; href: string };
 type NavGroup = { id: string; label: string; icon: IconComponent; children: NavLeaf[] };
 type NavItem = { id: string; label: string; icon: IconComponent; href: string };
 
-// Config-driven nav — a group renders as a collapsible dropdown, a plain
-// item renders as a single link. Add/remove/reorder sections here only;
-// nothing else needs to change.
 const navGroups: (NavGroup | NavItem)[] = [
   { id: "overview", label: "Overview", icon: HomeIcon, href: "/" },
   {
@@ -74,19 +71,18 @@ function isGroup(item: NavGroup | NavItem): item is NavGroup {
   return "children" in item;
 }
 
+// All groups start expanded on load — computed once outside render logic
+// so every group id in navGroups gets a `true` entry by default.
+const allGroupsOpen: Record<string, boolean> = navGroups.reduce((acc, item) => {
+  if (isGroup(item)) acc[item.id] = true;
+  return acc;
+}, {} as Record<string, boolean>);
+
 export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
 
-  // A group starts expanded if the current route is inside it, so a
-  // refresh on e.g. /survey/history lands with "Survey & Wheel" already open.
-  const activeGroupId = navGroups.find(
-    (item) => isGroup(item) && item.children.some((c) => location.pathname.startsWith(c.href))
-  )?.id;
-
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(
-    activeGroupId ? { [activeGroupId]: true } : {}
-  );
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(allGroupsOpen);
 
   function toggleGroup(id: string) {
     setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -94,7 +90,6 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
 
   return (
     <>
-      {/* Mobile scrim — clicking it closes the drawer, same as tapping outside any off-canvas menu */}
       {isOpen && (
         <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={onClose} aria-hidden="true" />
       )}
@@ -105,9 +100,9 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
         }`}
       >
         <div className="flex items-center justify-between px-5 py-6">
-          <div>
-            <p className="text-lg font-bold text-dash-accent-500">EasyEarn</p>
-            {user && <p className="mt-1 text-xs text-dash-text/50">@{user.username}</p>}
+          <div className="flex items-center gap-3">
+            <img src="/mulaearn.jpg" alt="MulaEarn" className="h-12 w-auto object-contain" />
+            <p className="text-base font-bold uppercase tracking-wide text-dash-text/60">Navigation</p>
           </div>
           <button onClick={onClose} className="text-dash-text/50 hover:text-dash-text md:hidden" aria-label="Close menu">
             <XIcon size={20} />
@@ -167,12 +162,17 @@ export default function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose:
                             <Link
                               to={child.href}
                               onClick={onClose}
-                              className={`block rounded-md px-3 py-2 text-sm transition-colors ${
+                              className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors ${
                                 isActive
                                   ? "bg-dash-accent-500/15 text-dash-accent-500"
                                   : "text-dash-text/60 hover:bg-dash-overlay hover:text-dash-text"
                               }`}
                             >
+                              <span
+                                className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+                                  isActive ? "bg-dash-accent-500" : "bg-dash-text/30"
+                                }`}
+                              />
                               {child.label}
                             </Link>
                           </li>

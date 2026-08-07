@@ -1,10 +1,13 @@
 import { apiFetch } from "@/lib/api";
+import type { GatewayGroup } from "@/lib/activation";
 
 export type DepositRequest = {
   id: number;
   method: string;
   amount: string;
   currency_code: string;
+  gateway_group: GatewayGroup | "";
+  gateway_display_name: string;
   proof_message: string;
   status: "pending" | "approved" | "rejected";
   created_at: string;
@@ -24,7 +27,18 @@ export function getMyDeposits() {
   return apiFetch<DepositRequest[]>("/api/payments/deposits/");
 }
 
-export function createDeposit(payload: { amount: string; currency_code: string; proof_message: string }) {
+/**
+ * Manual deposits only — gateway_id is which of the user's own country's
+ * active payment methods (from getActivationGateways(), lib/activation.ts)
+ * they used. The Kenya-automatic (Daraja) row is never submitted here —
+ * that goes through initiateSTKPush() below instead.
+ */
+export function createDeposit(payload: {
+  amount: string;
+  currency_code: string;
+  gateway_id: number;
+  proof_message: string;
+}) {
   return apiFetch<DepositRequest>("/api/payments/deposits/create/", { method: "POST", body: payload });
 }
 

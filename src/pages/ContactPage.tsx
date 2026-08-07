@@ -55,12 +55,12 @@ export default function ContactPage() {
             <li className="flex items-center gap-3">
               <span className="text-dash-text/50"><MailIcon size={18} /></span>
               <a href="mailto:support@mulaearn.com" className="hover:text-dash-accent-500">
-                support@mulaearn.com
+                support@mulaearn.co
               </a>
             </li>
             <li className="flex items-center gap-3">
               <span className="text-dash-text/50"><ChatBubbleIcon size={18} /></span>
-              <span>WhatsApp support: 07XX XXX XXX</span>
+              <span>WhatsApp support: +254750518501</span>
             </li>
             <li className="flex items-center gap-3">
               <span className="text-dash-text/50"><ClockIcon size={18} /></span>

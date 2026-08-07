@@ -41,35 +41,32 @@ export default function OverviewPage() {
     <div className="space-y-8">
       <section className="relative overflow-hidden rounded-2xl bg-linear-to-br from-dash-surface to-dash-bg p-6 ring-1 ring-dash-border md:p-8">
         <WelcomeBannerBackground />
-        <div className="relative z-10">
-        <div className="flex flex-wrap items-center gap-2">
-          <h1 className="text-2xl font-bold text-dash-text md:text-3xl">Welcome back, {user?.username}</h1>
-          {isVerified && (
-            <span
-              title={`Verified — total yield over ${currencySymbol} ${VERIFICATION_THRESHOLD.toLocaleString()}`}
-              className="flex items-center gap-1 rounded-full bg-dash-accent-500/15 px-2.5 py-1 text-xs font-medium text-dash-accent-500"
-            >
-              <ShieldCheckIcon size={14} /> Verified
-            </span>
-          )}
-        </div>
 
-        {wallet && (
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-sm text-dash-text/50">Total yield earned</span>
-            <span className="text-xl font-bold text-dash-accent-500">
-              {currencySymbol} {formatAmount(wallet.total_yield_earned)}
-            </span>
+        <div className="relative">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-2xl font-bold text-dash-text md:text-3xl">Welcome back, {user?.username}</h1>
+            {isVerified && (
+              <span className="...">
+                <ShieldCheckIcon size={14} /> Verified
+              </span>
+            )}
           </div>
-        )}
 
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-dash-text/70">
-          EasyEarn is a platform built to turn everyday time online into real income — chat with
-          real people, review apps and movies, answer surveys, and spin for extra cash, all paid
-          out in your own currency. Our goal is simple: make it straightforward for anyone,
-          anywhere, to earn something meaningful from the internet, with no hidden steps and no
-          guesswork about how to get started.
-        </p>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-dash-text/70">
+            Engage with tasks, chats, apps and movies reviews and boost your earnings with MulaEarn.
+            MulaEarn is your digital pathway to financial growth, offering a seamless experience to manage your funds and maximize your yields.
+          </p>
+
+          {wallet && (
+            <div className="mt-4 flex flex-col items-center justify-center gap-1 rounded-2xl bg-dash-accent-500/10 border border-dash-accent-500/20 px-6 py-4">
+              <span className="text-2xl uppercase tracking-wide font-bold text-dash-text/50">
+                Total earned
+              </span>
+              <span className="text-2xl font-bold text-dash-accent-500">
+                {currencySymbol} {formatAmount(wallet.total_yield_earned)}
+              </span>
+            </div>
+          )}
         </div>
       </section>
 
