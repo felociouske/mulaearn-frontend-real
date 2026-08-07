@@ -37,8 +37,8 @@ export default function LoginPage() {
 
       <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
         <div className="w-full max-w-md animate-fade-in-up">
-          <h1 className="text-2xl font-bold text-dash-text">Welcome back</h1>
-          <p className="mt-1 text-sm text-dash-text/50">Log in to keep earning.</p>
+          <h1 className="text-2xl font-bold text-center text-dash-text">Welcome back</h1>
+          <p className="mt-1 text-sm text-center text-dash-text/50">Log in to your MulaEarn Account</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <div>
