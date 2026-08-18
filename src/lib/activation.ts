@@ -54,15 +54,33 @@ export type ActivationSubmission = {
   currency_code: string;
   reference_code: string;
   proof_message: string;
+  bluepay_receipt_number: string;
   status: ActivationSubmissionStatus;
   admin_notes: string;
   created_at: string;
   reviewed_at: string | null;
 };
 
+export type InitiateBluepayActivationResponse = {
+  submission_id: number;
+  checkout_request_id: string;
+  message: string;
+};
+
 /** GET /api/activation/gateways/ — active payment options for the caller's own country. Empty array = not covered yet ("Coming soon"). */
 export function getActivationGateways() {
   return apiFetch<PaymentGateway[]>("/api/activation/gateways/");
+}
+
+export function initiateActivationBluepayPush() {
+  return apiFetch<InitiateBluepayActivationResponse>("/api/activation/bluepay/initiate/", {
+    method: "POST",
+  });
+}
+
+/** GET /api/activation/submissions/<id>/status/ — poll target for the BluePay flow above. */
+export function getActivationSubmissionStatus(submissionId: number) {
+  return apiFetch<ActivationSubmission>(`/api/activation/submissions/${submissionId}/status/`);
 }
 
 /** GET /api/activation/submissions/ — the caller's own activation payment history, most recent first. */

@@ -5,10 +5,20 @@ import { useToast } from "@/lib/toast-context";
 import { getFriendlyErrorMessage } from "@/lib/error-messages";
 import { PhoneIcon } from "@/components/icons/Icons";
 
-export default function WithdrawalForm({ currencyCode, onSuccess }: { currencyCode: string; onSuccess: () => void }) {
+type WithdrawalFormProps = {
+  walletType: "account" | "yield";
+  currencyCode: string;
+  onSuccess: () => void;
+};
+
+const WALLET_LABEL: Record<"account" | "yield", string> = {
+  account: "Account Balance",
+  yield: "Yield Wallet",
+};
+
+export default function WithdrawalForm({ walletType, currencyCode, onSuccess }: WithdrawalFormProps) {
   const { user } = useAuth();
   const toast = useToast();
-  const [walletType, setWalletType] = useState<"account" | "yield">("account");
   const [amount, setAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,27 +43,16 @@ export default function WithdrawalForm({ currencyCode, onSuccess }: { currencyCo
     <form onSubmit={handleSubmit} className="space-y-3">
       <div>
         <label className="block text-xs font-medium text-dash-text/70">Withdraw from</label>
-        <div className="mt-1 flex gap-2">
-          {(["account", "yield"] as const).map((type) => (
-            <button
-              type="button"
-              key={type}
-              onClick={() => setWalletType(type)}
-              className={`flex-1 rounded-md px-3 py-2 text-sm capitalize transition-colors ${
-                walletType === type ? "bg-dash-accent-500 text-dash-bg" : "bg-dash-overlay text-dash-text/70"
-              }`}
-            >
-              {type === "account" ? "Account Balance" : "Yield Wallet"}
-            </button>
-          ))}
+        <div className="mt-1 rounded-md bg-dash-overlay border border-dash-border px-3 py-2 text-sm font-medium text-dash-text">
+          {WALLET_LABEL[walletType]}
         </div>
       </div>
       <div>
-        <label className="block text-xs font-medium text-dash-text/70" htmlFor="withdraw-amount">
+        <label className="block text-xs font-medium text-dash-text/70" htmlFor={`withdraw-amount-${walletType}`}>
           Amount ({currencyCode})
         </label>
         <input
-          id="withdraw-amount"
+          id={`withdraw-amount-${walletType}`}
           type="number"
           step="0.01"
           required
@@ -79,7 +78,7 @@ export default function WithdrawalForm({ currencyCode, onSuccess }: { currencyCo
         disabled={isSubmitting || !user?.phone_number}
         className="w-full rounded-md bg-dash-accent-500 px-4 py-2 text-sm font-semibold text-dash-bg hover:bg-dash-accent-600 disabled:opacity-60 transition-colors"
       >
-        {isSubmitting ? "Submitting…" : "Request withdrawal"}
+        {isSubmitting ? "Submitting…" : `Withdraw from ${WALLET_LABEL[walletType]}`}
       </button>
     </form>
   );

@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import {
   getActivationGateways,
   getActivationSubmissions,
+  getActivationSubmissionStatus,
+  initiateActivationBluepayPush,
   submitActivation,
   type ActivationSubmission,
   type PaymentGateway,
 } from "@/lib/activation";
 import { ApiError } from "@/lib/api";
+import { SmartphoneIcon, ShieldCheckIcon } from "@/components/icons/Icons";
+
+const POLL_INTERVAL_MS = 3000;
+const POLL_TIMEOUT_MS = 90000; // give up after 90s — mirrors DepositForm's STK poll timeout
 
 // Full destination details for a gateway — the same idea as
 // DepositForm's compact GatewayDestination, but expanded to a labeled
@@ -63,6 +69,11 @@ export default function ActivatePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const [stkStatus, setStkStatus] = useState<"idle" | "waiting" | "success" | "failed">("idle");
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => () => { if (pollRef.current) clearInterval(pollRef.current); }, []);
+
   const currencySymbol = user?.country?.currency_symbol ?? "";
   const currencyCode = user?.country?.currency_code ?? "";
   const activationFee = user?.country?.activation_fee ?? "0.00";
@@ -92,6 +103,48 @@ export default function ActivatePage() {
       loadData();
     } finally {
       setIsRefreshing(false);
+    }
+  }
+
+  async function handleMpesaActivate() {
+    setSubmitError(null);
+    setIsSubmitting(true);
+    setStkStatus("idle");
+    try {
+      const { submission_id } = await initiateActivationBluepayPush();
+      setStkStatus("waiting");
+
+      const startedAt = Date.now();
+      pollRef.current = setInterval(async () => {
+        if (Date.now() - startedAt > POLL_TIMEOUT_MS) {
+          if (pollRef.current) clearInterval(pollRef.current);
+          setStkStatus("failed");
+          setSubmitError(
+            "Didn't receive confirmation in time — if you completed the payment, your account will still be activated once M-Pesa confirms. Check back here or use \"Check status\" below.",
+          );
+          return;
+        }
+        try {
+          const status = await getActivationSubmissionStatus(submission_id);
+          if (status.status === "approved") {
+            if (pollRef.current) clearInterval(pollRef.current);
+            setStkStatus("success");
+            await refreshUser();
+            loadData();
+          } else if (status.status === "rejected") {
+            if (pollRef.current) clearInterval(pollRef.current);
+            setStkStatus("failed");
+            setSubmitError("That payment wasn't completed — it may have been cancelled on your phone. You can try again.");
+          }
+        } catch {
+          /* a missed poll tick isn't worth surfacing as an error — next tick will retry */
+        }
+      }, POLL_INTERVAL_MS);
+    } catch (err) {
+      setSubmitError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+      setStkStatus("idle");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -189,34 +242,65 @@ export default function ActivatePage() {
                 <div className="mt-3 space-y-3">
                   {gateways.map((gateway) => {
                     const isSelected = selectedGateway?.id === gateway.id;
-                    // Instant M-Pesa activation isn't wired up on this page yet
-                    // (Daraja STK push currently only exists for topping up an
-                    // already-active account, on the Deposit page) — so Kenya's
-                    // automatic row stays disabled here specifically.
-                    const isDisabled = gateway.group === "kenya" && gateway.is_automatic;
+                    const isKenyaAutomatic = gateway.group === "kenya" && gateway.is_automatic;
                     return (
                       <div key={gateway.id}>
                         <button
                           type="button"
-                          disabled={isDisabled}
                           onClick={() => setSelectedGateway(isSelected ? null : gateway)}
                           className={`w-full rounded-xl p-4 text-left ring-1 transition-colors ${
                             isSelected
                               ? "bg-dash-accent-500/10 ring-dash-accent-500"
                               : "bg-dash-surface ring-dash-border hover:bg-dash-overlay"
-                          } ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
+                          }`}
                         >
                           <div className="flex items-center justify-between">
                             <span className="font-semibold text-dash-text">{gateway.display_name}</span>
-                            {isDisabled ? (
-                              <span className="text-xs text-dash-text/40">Coming soon — use manual below</span>
+                            {isKenyaAutomatic ? (
+                              <span className="text-xs text-dash-accent-500">Instant — pay with M-Pesa</span>
                             ) : (
                               <span className="text-xs text-dash-text/40">Manual — instant on approval</span>
                             )}
                           </div>
                         </button>
 
-                        {isSelected && !isDisabled && (
+                        {isSelected && isKenyaAutomatic && (
+                          <div className="mt-2 rounded-xl bg-dash-surface p-5 ring-1 ring-dash-border">
+                            <pre className="whitespace-pre-wrap rounded-lg bg-dash-overlay p-3 text-sm text-dash-text/80 font-sans">
+                              {gateway.description}
+                            </pre>
+
+                            <div className="mt-4 space-y-3">
+                              {submitError && (
+                                <p className="rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-400">{submitError}</p>
+                              )}
+                              {stkStatus === "waiting" && (
+                                <p className="flex items-center gap-2 rounded-md bg-dash-accent-500/10 px-3 py-2 text-xs text-dash-accent-500">
+                                  <SmartphoneIcon size={14} /> Check your phone and enter your M-Pesa PIN…
+                                </p>
+                              )}
+                              {stkStatus === "success" && (
+                                <p className="flex items-center gap-2 rounded-md bg-dash-accent-500/10 px-3 py-2 text-xs text-dash-accent-500">
+                                  <ShieldCheckIcon size={14} /> Payment received — your account is now activated!
+                                </p>
+                              )}
+                              <button
+                                type="button"
+                                onClick={handleMpesaActivate}
+                                disabled={isSubmitting || stkStatus === "waiting" || stkStatus === "success"}
+                                className="w-full rounded-md bg-dash-accent-500 px-5 py-2.5 text-sm font-semibold text-dash-bg hover:bg-dash-accent-600 disabled:opacity-60 transition-colors"
+                              >
+                                {stkStatus === "waiting"
+                                  ? "Waiting for confirmation…"
+                                  : isSubmitting
+                                    ? "Sending prompt…"
+                                    : `Pay ${currencySymbol} ${activationFee} ${currencyCode} with M-Pesa`}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {isSelected && !isKenyaAutomatic && (
                           <div className="mt-2 rounded-xl bg-dash-surface p-5 ring-1 ring-dash-border">
                             <GatewayDetails gateway={gateway} />
                             <pre className="mt-3 whitespace-pre-wrap rounded-lg bg-dash-overlay p-3 text-sm text-dash-text/80 font-sans">

@@ -64,7 +64,7 @@ const navGroups: (NavGroup | NavItem)[] = [
       { label: "Withdraw", href: "/withdraw" },
     ],
   },
-  { id: "referrals", label: "Referrals", icon: LinkIcon, href: "/referrals" },
+  { id: "leads", label: "Leads", icon: LinkIcon, href: "/referrals" },
 ];
 
 function isGroup(item: NavGroup | NavItem): item is NavGroup {

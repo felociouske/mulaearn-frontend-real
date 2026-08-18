@@ -3,6 +3,8 @@ import { apiFetch } from "@/lib/api";
 export type ReferralCommission = {
   id: number;
   referred_username: string;
+  source: "plan_purchase" | "activation";
+  source_display: string;
   amount: string;
   created_at: string;
 };
@@ -24,8 +26,8 @@ export function getMyReferralSummary() {
 
 export type ReferredUser = {
   id: number;
-  email_masked: string;
-  phone_masked: string;
+  email: string;
+  phone_number: string;
   date_joined: string;
   is_activated: boolean;
   commission_earned: string;

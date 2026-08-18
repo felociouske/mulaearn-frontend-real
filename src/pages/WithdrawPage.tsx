@@ -22,21 +22,28 @@ export default function WithdrawPage() {
 
   useEffect(loadWithdrawals, []);
 
+  // This page only handles Account Balance withdrawals. Yield Wallet
+  // withdrawals have their own form on the Referrals page.
+  const accountWithdrawals = withdrawals.filter((w) => w.wallet_type === "account");
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-dash-text">Withdraw</h1>
       <p className="mt-1 text-sm text-dash-text/50">Minimum withdrawal is Ksh 200 (or your local equivalent).</p>
+      <p className="mt-1 text-xs text-dash-text/40">
+        Withdrawing your referral earnings? Head to the Referrals page — the Yield Wallet has its own withdrawal form there.
+      </p>
 
       {error && <p className="mt-4 rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-lg bg-dash-surface p-5">
-          <WithdrawalForm currencyCode={currencyCode} onSuccess={loadWithdrawals} />
+          <WithdrawalForm walletType="account" currencyCode={currencyCode} onSuccess={loadWithdrawals} />
         </div>
         <div className="divide-y divide-dash-border rounded-lg bg-dash-surface">
           <p className="p-4 text-xs font-semibold uppercase tracking-wide text-dash-text/40">Your withdrawal requests</p>
-          {withdrawals.length === 0 && <p className="p-4 text-sm text-dash-text/50">No withdrawal requests yet.</p>}
-          {withdrawals.map((w) => (
+          {accountWithdrawals.length === 0 && <p className="p-4 text-sm text-dash-text/50">No withdrawal requests yet.</p>}
+          {accountWithdrawals.map((w) => (
             <div key={w.id} className="flex items-center justify-between p-4 text-sm">
               <div>
                 <p className="text-dash-text">
