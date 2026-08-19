@@ -2,7 +2,7 @@ import { useState, type ComponentType } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/auth-context";
 import {
-  HomeIcon, ChatBubbleIcon, WheelIcon, SmartphoneIcon, FilmIcon,
+  HomeIcon, ChatBubbleIcon, WheelIcon, SmartphoneIcon, FilmIcon, PiggyBankIcon,
   WalletIcon, LinkIcon, PhoneIcon, LogOutIcon, ChevronDownIcon, XIcon,
 } from "@/components/icons/Icons";
 
@@ -21,6 +21,16 @@ const navGroups: (NavGroup | NavItem)[] = [
       { label: "Engage in Chats", href: "/chats" },
       { label: "Chat History", href: "/chats/history" },
       { label: "Chat Plans", href: "/plans/chat" },
+    ],
+  },
+  {
+    id: "loans",
+    label: "Loans",
+    icon: PiggyBankIcon,
+    children: [
+      { label: "Apply for a Loan", href: "/loans/apply" },
+      { label: "Loan Plans", href: "/loans/plans" },
+      { label: "Loan History", href: "/loans/history" },
     ],
   },
   {

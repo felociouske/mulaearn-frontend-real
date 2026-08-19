@@ -22,6 +22,9 @@ import AppReviewHistoryPage from "@/pages/AppReviewHistoryPage";
 import MovieReviewsPage from "@/pages/MovieReviewsPage";
 import MovieReviewPlansPage from "@/pages/MovieReviewPlansPage";
 import MovieReviewHistoryPage from "@/pages/MovieReviewHistoryPage";
+import LoanPlansPage from "@/pages/LoansPlansPage";
+import ApplyLoanPage from "@/pages/ApplyLoanPage";
+import LoanHistoryPage from "@/pages/LoanHistoryPage";
 import WalletPage from "@/pages/WalletPage";
 import DepositPage from "@/pages/DepositPage";
 import WithdrawPage from "@/pages/WithdrawPage";
@@ -76,6 +79,12 @@ export default function App() {
             {/* Movie reviews */}
             <Route path="/movie-reviews" element={<MovieReviewsPage />} />
             <Route path="/movie-reviews/history" element={<MovieReviewHistoryPage />} />
+
+            {/* Loans */}
+            <Route path="/loans/apply" element={<ApplyLoanPage />} />
+            <Route path="/loans/plans" element={<LoanPlansPage />} />
+            <Route path="/loans/history" element={<LoanHistoryPage />} />
+            <Route path="/loans" element={<Navigate to="/loans/apply" replace />} />
 
             {/* Plans — nested under each section's dropdown, not a top-level page */}
             <Route path="/plans/chat" element={<ChatPlansPage />} />
