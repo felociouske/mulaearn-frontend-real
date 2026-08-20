@@ -29,11 +29,6 @@ export default function WithdrawPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-dash-text">Withdraw</h1>
-      <p className="mt-1 text-sm text-dash-text/50">Minimum withdrawal is Ksh 200 (or your local equivalent).</p>
-      <p className="mt-1 text-xs text-dash-text/40">
-        Withdrawing your referral earnings? Head to the Referrals page — the Yield Wallet has its own withdrawal form there.
-      </p>
-
       {error && <p className="mt-4 rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
