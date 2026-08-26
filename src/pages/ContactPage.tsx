@@ -59,10 +59,6 @@ export default function ContactPage() {
               </a>
             </li>
             <li className="flex items-center gap-3">
-              <span className="text-dash-text/50"><ChatBubbleIcon size={18} /></span>
-              <span>WhatsApp support: +254750518501</span>
-            </li>
-            <li className="flex items-center gap-3">
               <span className="text-dash-text/50"><ClockIcon size={18} /></span>
               <span>Typical response time: within 24 hours</span>
             </li>
