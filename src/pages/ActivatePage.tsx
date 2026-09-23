@@ -227,13 +227,26 @@ export default function ActivatePage() {
         ) : !isPending && (
           <div className="mt-6">
             {gateways.length === 0 ? (
-              <div className="rounded-xl bg-dash-surface p-6 ring-1 ring-dash-border">
-                <p className="font-semibold text-dash-text">Coming soon for {user?.country?.name ?? "your country"}</p>
-                <p className="mt-2 text-sm text-dash-text/60">
-                  We don't have an automated activation option set up for your country yet. Please contact
-                  support for a quick deposit guide and we'll activate your account manually.
-                </p>
-              </div>
+                <div className="rounded-xl bg-dash-surface p-6 ring-1 ring-dash-border">
+                  <p className="font-semibold text-dash-text">Coming soon for {user?.country?.name ?? "your country"}</p>
+                  <p className="mt-2 text-sm text-dash-text/60">
+                    We don't have an automated activation option set up for your country yet. Contact our support team by tapping on the Whatsapp
+                    icon for a quick guide on how to activate your account.
+                  </p>
+                  <a
+                    href="https://wa.me/254750518501?text=Hi%2C%20I%20need%20help%20activating%20my%20MulaEarn%20account"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Contact support on WhatsApp"
+                    className="relative mt-4 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#25D366]/30 transition-transform hover:scale-105 active:scale-95"
+                  >
+                    <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#25D366] opacity-75" />
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 fill-current" aria-hidden="true">
+                      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.24.68-1.4 1.3-1.93 1.36-.5.06-1.03.28-3.44-.72-2.9-1.21-4.77-4.17-4.92-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.26-.28.58-.35.77-.35.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.14.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.45.52-.15.14-.3.3-.13.6.17.28.76 1.26 1.63 2.04 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.07.17-.2.72-.84.92-1.13.19-.28.38-.24.64-.14.26.1 1.65.78 1.94.92.28.14.47.21.54.33.07.13.07.71-.17 1.38Z" />
+                    </svg>
+                    WhatsApp us
+                  </a>
+                </div>
             ) : (
               <>
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-dash-text/40">

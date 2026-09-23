@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { MailIcon, ChatBubbleIcon, ClockIcon } from "@/components/icons/Icons";
+import { MailIcon, ClockIcon } from "@/components/icons/Icons";
 
 // Static support info + a form for now. Wiring this to actually send
 // somewhere (email, a support-ticket model, Slack webhook, etc.) is a
