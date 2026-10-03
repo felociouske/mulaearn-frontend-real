@@ -163,7 +163,7 @@ export default function NotificationsPage() {
       <div className="mt-5 space-y-6">
         {isLoading ? (
           <div className="space-y-3">
-            {[0, 1, 2, 3].map((i) => <div key={i} className="h-[72px] animate-pulse rounded-xl bg-dash-surface" />)}
+            {[0, 1, 2, 3].map((i) => <div key={i} className="h-18 animate-pulse rounded-xl bg-dash-surface" />)}
           </div>
         ) : error ? (
           <div className="rounded-xl bg-red-500/10 p-4 text-center text-sm text-red-500 ring-1 ring-red-500/30">

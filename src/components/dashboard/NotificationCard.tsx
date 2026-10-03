@@ -28,7 +28,7 @@ export default function NotificationCard({ n, onOpen, onDelete }: Props) {
     return (
       <div
         onClick={() => onOpen(n)}
-        className={`group cursor-pointer rounded-xl bg-gradient-to-br from-rose-500/20 via-fuchsia-500/10 to-indigo-500/20 p-4 ring-1 ring-rose-500/30 transition hover:ring-rose-500/60 ${n.is_read ? "opacity-70" : ""}`}
+        className={`group cursor-pointer rounded-xl bg-linear-to-br from-rose-500/20 via-fuchsia-500/10 to-indigo-500/20 p-4 ring-1 ring-rose-500/30 transition hover:ring-rose-500/60 ${n.is_read ? "opacity-70" : ""}`}
       >
         <div className="flex items-start gap-3">
           <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 ${meta.tone}`}><Icon size={20} /></span>
