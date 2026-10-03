@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { NotificationsProvider } from "@/lib/notifications-context";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
 import DashboardFooter from "@/components/dashboard/DashboardFooter";
@@ -18,6 +19,7 @@ export default function DashboardLayout() {
 
   return (
     <ProtectedRoute>
+      <NotificationsProvider>
       <div className="flex min-h-screen bg-dash-bg">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         <div className="flex min-w-0 flex-1 flex-col">
@@ -28,6 +30,7 @@ export default function DashboardLayout() {
           <DashboardFooter />
         </div>
       </div>
+      </NotificationsProvider>
     </ProtectedRoute>
   );
 }
